@@ -14,6 +14,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+import util.JournalUser;
+
 public class RegisterActivity extends AppCompatActivity {
 
     EditText password_create, email_create, username_create;
@@ -83,6 +85,13 @@ public class RegisterActivity extends AppCompatActivity {
                                             .addOnCompleteListener(task1 -> {
                                                 if(Objects.requireNonNull(task1.getResult()).exists()){
                                                     String name = task1.getResult().getString("username");
+
+// if the user is registered successfully then we start the MyJournal Activity
+// Getting the Global Journal user
+                                                    JournalUser journalUser = JournalUser.getInstance();
+                                                    journalUser.setUserId(currentUserId);
+                                                    journalUser.setUsername(name);
+
                                                     Toast.makeText(RegisterActivity.this, "Welcome " + name, Toast.LENGTH_SHORT).show();
                                                     Intent intent = new Intent(RegisterActivity.this, MyJournal.class);
                                                     intent.putExtra("username",name);

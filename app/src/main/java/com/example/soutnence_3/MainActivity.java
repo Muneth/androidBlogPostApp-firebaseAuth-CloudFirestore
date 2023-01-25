@@ -12,6 +12,8 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
+import util.JournalUser;
+
 public class MainActivity extends AppCompatActivity {
 
     Button register,login;
@@ -52,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
             firebaseAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(task -> {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 assert user != null;
-                String currentUserId = user.getUid();
+                final String currentUserId = user.getUid();
 
                 collectionReference.whereEqualTo("userId",currentUserId).addSnapshotListener((value, error) -> {
                     if(error != null){
@@ -62,16 +64,20 @@ public class MainActivity extends AppCompatActivity {
                     if(!value.isEmpty()) {
 //      Getting all the data from the database
                         for (QueryDocumentSnapshot snapshot : value) {
-                            String userId = snapshot.getString("userId");
-                            String username = snapshot.getString("username");
-                            Toast.makeText(MainActivity.this, "Welcome " + username, Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(MainActivity.this, MyJournal.class));
+                            JournalUser journalUser = JournalUser.getInstance();
+                            journalUser.setUsername(snapshot.getString("username"));
+                            journalUser.setUserId(snapshot.getString("userId"));
+
+//                            startActivity(new Intent(MainActivity.this, MyJournal.class));
+                            startActivity(new Intent(MainActivity.this, JournalList.class));
                         }
                     } else {
                         Toast.makeText(MainActivity.this, "No such user", Toast.LENGTH_SHORT).show();
                     }
                 });
             }).addOnFailureListener(e -> Toast.makeText(MainActivity.this, "Error: "+e.getMessage(), Toast.LENGTH_SHORT).show());
+        } else {
+            Toast.makeText(this, "Please enter email and password", Toast.LENGTH_SHORT).show();
         }
     }
 }
