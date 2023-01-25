@@ -76,7 +76,7 @@ public class JournalRecyclerAdapter extends RecyclerView.Adapter<JournalRecycler
               context = ctx;
               title = itemView.findViewById(R.id.journal_title_list);
               thoughts = itemView.findViewById(R.id.journal_thought_list);
-              timestamp = itemView.findViewById(R.id.journal_timestamp_list);
+//              timestamp = itemView.findViewById(R.id.journal_timestamp_list);
               image = itemView.findViewById(R.id.journal_image_list);
               name = itemView.findViewById(R.id.journal_row_username);
               shareButton = itemView.findViewById(R.id.journal_row_share_button);

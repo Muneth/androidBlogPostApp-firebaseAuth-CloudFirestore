@@ -58,7 +58,6 @@ public class JournalList extends AppCompatActivity {
 
 //        Posts ArrayList
         journalList = new ArrayList<>();
-
     }
 
 //    Adding the Menu

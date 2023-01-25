@@ -3,8 +3,11 @@ package com.example.soutnence_3;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -18,8 +21,10 @@ import util.JournalUser;
 
 public class RegisterActivity extends AppCompatActivity {
 
+    TextView registertextview;
     EditText password_create, email_create, username_create;
-    Button register;
+    Button register, backToLogin;
+    Animation animate_btn,animate_txt, animate_txt2;
 
 //  Firebase Auth
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
@@ -35,10 +40,24 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
+        registertextview = findViewById(R.id.registertextview);
         register = findViewById(R.id.register);
+        backToLogin = findViewById(R.id.backtologin);
         password_create = findViewById(R.id.password_create);
         email_create = findViewById(R.id.email_create);
         username_create = findViewById(R.id.username_create);
+
+//        Load the animation from the xml file
+        animate_txt = AnimationUtils.loadAnimation(this, R.anim.animate_texts);
+        animate_txt2 = AnimationUtils.loadAnimation(this, R.anim.animate_texts2);
+        animate_btn = AnimationUtils.loadAnimation(this, R.anim.animate_btn);
+//        Start the animation
+        registertextview.startAnimation(animate_txt);
+        email_create.startAnimation(animate_txt2);
+        password_create.startAnimation(animate_txt2);
+        username_create.startAnimation(animate_txt2);
+        register.startAnimation(animate_btn);
+        backToLogin.startAnimation(animate_btn);
 
 //      Authentication
         authStateListener = firebaseAuth -> {
@@ -49,6 +68,11 @@ public class RegisterActivity extends AppCompatActivity {
                 //no user yet
             }
         };
+//      To Login Activity
+        backToLogin.setOnClickListener(v -> {
+            Intent i = new Intent(getApplicationContext(),LoginActivity.class);
+            startActivity(i);
+        });
 
 //      Register
         register.setOnClickListener(v -> {

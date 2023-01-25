@@ -37,11 +37,10 @@ public class MyJournal extends AppCompatActivity {
 
     private static final int GALLERY_CODE = 1;
     private TextView welcomeUser;
-    private Button postSave;
+    private Button postSave, backToDashboard;
     private ProgressBar progressBar;
     private ImageView addImageButton, imageView;
     private EditText title, thoughts;
-    private TextView date, currentUserTextView;
 
 //    User Id & Username
     private String currentJournalUserId;
@@ -72,18 +71,17 @@ public class MyJournal extends AppCompatActivity {
         imageView = findViewById(R.id.post_imageview);
         title = findViewById(R.id.post_title_edittext);
         thoughts = findViewById(R.id.post_description_edittext);
-        date = findViewById(R.id.post_date_textview);
-        currentUserTextView = findViewById(R.id.post_username_textview);
         postSave = findViewById(R.id.post_save_button);
         addImageButton = findViewById(R.id.postCameraButton);
+        backToDashboard = findViewById(R.id.backtodashboard);
 
         progressBar.setVisibility(View.INVISIBLE);
 
+//        Getting the current user
         if(JournalUser.getInstance() != null){
             currentJournalUserId = JournalUser.getInstance().getUserId();
             currentUsername = JournalUser.getInstance().getUsername();
-            currentUserTextView.setText(currentUsername);
-            welcomeUser.setText("   Welcome   "+ currentUsername);
+            welcomeUser.setText("Bienvenue  "+ currentUsername.toUpperCase());
         }
 
         authStateListener = firebaseAuth -> {
@@ -94,6 +92,11 @@ public class MyJournal extends AppCompatActivity {
                 //user is not logged in
             }
         };
+
+        backToDashboard.setOnClickListener(v -> {
+            startActivity(new Intent(MyJournal.this, JournalList.class));
+            finish();
+        });
 
 //      Save Journal Post to FireStore
         postSave.setOnClickListener(v -> {

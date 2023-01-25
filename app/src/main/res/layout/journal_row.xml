@@ -69,13 +69,13 @@
             android:textStyle="normal"
             android:id="@+id/journal_thought_list" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Date Created"
-            android:padding="5dp"
-            android:textStyle="italic"
-            android:id="@+id/journal_timestamp_list" />
+<!--        <TextView-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Date Created"-->
+<!--            android:padding="5dp"-->
+<!--            android:textStyle="italic"-->
+<!--            android:id="@+id/journal_timestamp_list" />-->
 
     </LinearLayout>
         

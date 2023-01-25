@@ -3,81 +3,40 @@ package com.example.soutnence_3;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Toast;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-
-import util.JournalUser;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button register,login;
-    EditText email,password;
-
-//    Firebase Auth
-    private FirebaseAuth firebaseAuth;
-    private FirebaseAuth.AuthStateListener authStateListener;
-    private FirebaseUser currentUser;
-
-//    FireBase Connection
-    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private final CollectionReference collectionReference = db.collection("Users");
+// Widgets
+    Button suivant;
+    TextView t1,t2;
+    Animation animate_btn,animate_txt, animate_txt2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        register = findViewById(R.id.register);
-        login = findViewById(R.id.login);
-        email = findViewById(R.id.email);
-        password = findViewById(R.id.password);
+        suivant = findViewById(R.id.suivant);
+        t1  = findViewById(R.id.logintextview);
+        t2  = findViewById(R.id.registertextview);
 
-//        Firebase Auth
-        firebaseAuth = FirebaseAuth.getInstance();
+        // Load the animation from the xml file
+        animate_btn = AnimationUtils.loadAnimation(this, R.anim.animate_btn);
+        animate_txt = AnimationUtils.loadAnimation(this, R.anim.animate_texts);
+        animate_txt2 = AnimationUtils.loadAnimation(this, R.anim.animate_texts2);
 
-        register.setOnClickListener(v -> {
-            Intent i = new Intent(getApplicationContext(),RegisterActivity.class);
+        // Set the animation to the widgets
+        suivant.setAnimation(animate_btn);
+        t1.setAnimation(animate_txt);
+        t2.setAnimation(animate_txt2);
+
+        suivant.setOnClickListener(v -> {
+            Intent i = new Intent(getApplicationContext(),LoginActivity.class);
             startActivity(i);
         });
-
-        login.setOnClickListener(v -> LoginEmailPasswordUser(email.getText().toString(),password.getText().toString()));
-    }
-
-    private void LoginEmailPasswordUser(String email, String password) {
-        if(!email.isEmpty() && !password.isEmpty()){
-            firebaseAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(task -> {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                assert user != null;
-                final String currentUserId = user.getUid();
-
-                collectionReference.whereEqualTo("userId",currentUserId).addSnapshotListener((value, error) -> {
-                    if(error != null){
-                        return;
-                    }
-                    assert value != null;
-                    if(!value.isEmpty()) {
-//      Getting all the data from the database
-                        for (QueryDocumentSnapshot snapshot : value) {
-                            JournalUser journalUser = JournalUser.getInstance();
-                            journalUser.setUsername(snapshot.getString("username"));
-                            journalUser.setUserId(snapshot.getString("userId"));
-
-//                            startActivity(new Intent(MainActivity.this, MyJournal.class));
-                            startActivity(new Intent(MainActivity.this, JournalList.class));
-                        }
-                    } else {
-                        Toast.makeText(MainActivity.this, "No such user", Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }).addOnFailureListener(e -> Toast.makeText(MainActivity.this, "Error: "+e.getMessage(), Toast.LENGTH_SHORT).show());
-        } else {
-            Toast.makeText(this, "Please enter email and password", Toast.LENGTH_SHORT).show();
-        }
     }
 }
