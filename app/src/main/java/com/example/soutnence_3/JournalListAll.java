@@ -1,5 +1,7 @@
 package com.example.soutnence_3;
 
+import androidx.appcompat.app.AppCompatActivity;
+import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -26,7 +28,7 @@ import java.util.List;
 
 import util.JournalUser;
 
-public class JournalList extends AppCompatActivity {
+public class JournalListAll extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener authStateListener;
@@ -44,15 +46,16 @@ public class JournalList extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_journal_list);
+        setContentView(R.layout.activity_journal_list_all);
+
 
 //       Firebase Auth
         firebaseAuth = FirebaseAuth.getInstance();
         currentUser = firebaseAuth.getCurrentUser();
 
 //      Widgets
-        noJournalEntry = findViewById(R.id.list_no_posts);
-        recyclerView = findViewById(R.id.journal_list_recycler_view);
+        noJournalEntry = findViewById(R.id.list_no_posts_all);
+        recyclerView = findViewById(R.id.journal_list_recycler_view_all);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -60,7 +63,7 @@ public class JournalList extends AppCompatActivity {
         journalList = new ArrayList<>();
     }
 
-//    Adding the Menu
+    //    Adding the Menu
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu,menu);
@@ -73,7 +76,7 @@ public class JournalList extends AppCompatActivity {
             case R.id.action_add:
 //      Take user to MyJournalActivity
                 if(currentUser != null && firebaseAuth != null){
-                    startActivity(new Intent(JournalList.this,MyJournal.class));
+                    startActivity(new Intent(JournalListAll.this,MyJournal.class));
                     finish();
                 }
                 break;
@@ -81,21 +84,21 @@ public class JournalList extends AppCompatActivity {
 //      Signout user
                 if(currentUser != null && firebaseAuth != null){
                     firebaseAuth.signOut();
-                    startActivity(new Intent(JournalList.this,MainActivity.class));
+                    startActivity(new Intent(JournalListAll.this,MainActivity.class));
                     finish();
                 }
                 break;
 //      Dashboard
             case R.id.action_dashboard:
                 if(currentUser != null && firebaseAuth != null){
-                    startActivity(new Intent(JournalList.this,JournalList.class));
+                    startActivity(new Intent(JournalListAll.this,JournalList.class));
                     finish();
                 }
                 break;
 //      All Posts
             case R.id.home:
                 if(currentUser != null && firebaseAuth != null){
-                    startActivity(new Intent(JournalList.this,JournalListAll.class));
+                    startActivity(new Intent(JournalListAll.this,JournalListAll.class));
                     finish();
                 }
                 break;
@@ -106,22 +109,22 @@ public class JournalList extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        collectionReference.whereEqualTo("userId", JournalUser.getInstance().getUserId()).get().addOnCompleteListener(task -> {
+        collectionReference.get().addOnCompleteListener(task -> {
             if(task.isSuccessful()){
                 if(!task.getResult().isEmpty()){
                     for(QueryDocumentSnapshot journals : task.getResult()){
                         Journal journal = journals.toObject(Journal.class);
                         journalList.add(journal);
                     }
-
-//              Recycler View
-                    journalRecyclerAdapter = new JournalRecyclerAdapter(JournalList.this,journalList);
+                    journalRecyclerAdapter = new JournalRecyclerAdapter(JournalListAll.this,journalList);
                     recyclerView.setAdapter(journalRecyclerAdapter);
                     journalRecyclerAdapter.notifyDataSetChanged();
-                } else {
+                }else{
                     noJournalEntry.setVisibility(View.VISIBLE);
                 }
+            }else{
+                noJournalEntry.setVisibility(View.VISIBLE);
             }
-        }).addOnFailureListener(Throwable::printStackTrace);
+        });
     }
 }

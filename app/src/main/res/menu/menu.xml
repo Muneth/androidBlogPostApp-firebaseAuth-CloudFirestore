@@ -13,4 +13,14 @@
         android:title="Logout"
         app:showAsAction="always" />
 
+    <item
+        android:id="@+id/home"
+        android:title="Home"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action_dashboard"
+        android:title="My Posts"
+        app:showAsAction="ifRoom" />
+
 </menu>
