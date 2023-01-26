@@ -8,6 +8,12 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.TextView;
 
+/**
+ * This is the main activity of the app.
+ * It is the first activity that is shown to the user.
+ * It contains a button to go to the login activity.
+ */
+
 public class MainActivity extends AppCompatActivity {
 
 // Widgets

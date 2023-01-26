@@ -1,5 +1,8 @@
 package com.example.soutnence_3.model;
 
+/**
+ * This class represents a journal model for the database.
+ */
 public class Journal {
     private String title;
     private String thoughts;

@@ -26,6 +26,10 @@ import java.util.List;
 
 import util.JournalUser;
 
+/**
+ * This class displays the list of journals that the user has created.
+ */
+
 public class JournalList extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
@@ -60,12 +64,23 @@ public class JournalList extends AppCompatActivity {
         journalList = new ArrayList<>();
     }
 
-//    Adding the Menu
+    /**
+     * This method is called when the activity is about to become visible.
+     * Adding the Menu to the activity.
+     * @param menu
+     * @return
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu,menu);
         return super.onCreateOptionsMenu(menu);
     }
+
+    /**
+     * This method handles the menu items.
+     * @param item
+     * @return
+     */
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {

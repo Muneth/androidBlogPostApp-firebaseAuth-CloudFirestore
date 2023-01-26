@@ -1,6 +1,9 @@
 package util;
 import android.app.Application;
 
+/**
+ * This class represents a user model for the database.
+ */
 public class JournalUser extends Application {
     private String username;
     private String userId;

@@ -19,6 +19,10 @@ import java.util.Objects;
 
 import util.JournalUser;
 
+/**
+ * This class is used to register a new user.
+ */
+
 public class RegisterActivity extends AppCompatActivity {
 
     TextView registertextview;
@@ -47,7 +51,9 @@ public class RegisterActivity extends AppCompatActivity {
         email_create = findViewById(R.id.email_create);
         username_create = findViewById(R.id.username_create);
 
-//        Load the animation from the xml file
+        /**
+         *  Load the animation from the xml file
+         */
         animate_txt = AnimationUtils.loadAnimation(this, R.anim.animate_texts);
         animate_txt2 = AnimationUtils.loadAnimation(this, R.anim.animate_texts2);
         animate_btn = AnimationUtils.loadAnimation(this, R.anim.animate_btn);
@@ -88,6 +94,13 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
     }
+
+    /**
+     * This method is used to create a new user account.
+     * @param email
+     * @param password
+     * @param username
+     */
 
     private void createUserEmailAccount(String email, String password, String username) {
         if(!email.isEmpty() && !password.isEmpty() && !username.isEmpty()){

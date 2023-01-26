@@ -28,6 +28,10 @@ import java.util.List;
 
 import util.JournalUser;
 
+/**
+ * This class is the activity for the list of all journal entries from all users.
+ */
+
 public class JournalListAll extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
@@ -49,7 +53,9 @@ public class JournalListAll extends AppCompatActivity {
         setContentView(R.layout.activity_journal_list_all);
 
 
-//       Firebase Auth
+/**
+ * Firebase Authentication
+ */
         firebaseAuth = FirebaseAuth.getInstance();
         currentUser = firebaseAuth.getCurrentUser();
 
@@ -69,6 +75,12 @@ public class JournalListAll extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu,menu);
         return super.onCreateOptionsMenu(menu);
     }
+
+    /**
+     * This method is for the menu items.
+     * @param item
+     * @return
+     */
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -106,6 +118,9 @@ public class JournalListAll extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * This method is to get the data from the database and display it in the recycler view.
+     */
     @Override
     protected void onStart() {
         super.onStart();

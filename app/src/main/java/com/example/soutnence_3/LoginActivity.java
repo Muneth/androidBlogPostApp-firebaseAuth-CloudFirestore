@@ -18,6 +18,11 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import util.JournalUser;
 
+/**
+ * A login screen that offers login via email/password.
+ * This class is responsible for the login screen and the login functionality.
+ */
+
 public class LoginActivity extends AppCompatActivity {
 
     TextView logintextview;
@@ -67,6 +72,12 @@ public class LoginActivity extends AppCompatActivity {
         login.setOnClickListener(v -> LoginEmailPasswordUser(email.getText().toString(),password.getText().toString()));
     }
 
+    /**
+     * This method is responsible for the login functionality.
+     * This method is called when the user clicks on the login button and it verify the user in the database.
+     * @param email
+     * @param password
+     */
     private void LoginEmailPasswordUser(String email, String password) {
         if(!email.isEmpty() && !password.isEmpty()){
             firebaseAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(task -> {
@@ -87,7 +98,7 @@ public class LoginActivity extends AppCompatActivity {
                             journalUser.setUserId(snapshot.getString("userId"));
 
 //                            startActivity(new Intent(MainActivity.this, MyJournal.class));
-                            startActivity(new Intent(LoginActivity.this, JournalList.class));
+                            startActivity(new Intent(LoginActivity.this, JournalListAll.class));
                         }
                     } else {
                         Toast.makeText(LoginActivity.this, "No such user", Toast.LENGTH_SHORT).show();

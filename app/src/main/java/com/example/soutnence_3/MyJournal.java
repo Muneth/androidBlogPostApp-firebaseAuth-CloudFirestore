@@ -33,6 +33,9 @@ import java.util.Objects;
 
 import util.JournalUser;
 
+/**
+ * This class is the activity for the user to add a new journal entry.
+ */
 public class MyJournal extends AppCompatActivity {
 
     private static final int GALLERY_CODE = 1;
@@ -45,13 +48,17 @@ public class MyJournal extends AppCompatActivity {
 //    User Id & Username
     private String currentJournalUserId;
     private String currentUsername;
-
-//  Firebase Auth
+    /**
+     * Firebase Authentification
+     */
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener authStateListener;
     private FirebaseUser currentUser;
 
-//  FireBase Connection
+    /**
+     * Firebase Firestore
+     * FireBase Connection
+     */
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
     private StorageReference storageReference;
     private final CollectionReference collectionReference = db.collection("Users");
@@ -77,11 +84,26 @@ public class MyJournal extends AppCompatActivity {
 
         progressBar.setVisibility(View.INVISIBLE);
 
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+        assert user != null;
+        String currentUserId = user.getUid();
+
+        collectionReference.whereEqualTo("userId", currentUserId).addSnapshotListener((value, error) -> {
+            if (error != null) {
+                return;
+            }
+            if (value != null) {
+                for (QueryDocumentSnapshot snapshot : value) {
+                    String username = snapshot.getString("username");
+                    welcomeUser.setText("Bienvenue  "+ username.toUpperCase());
+                }
+            }
+        });
 //        Getting the current user
         if(JournalUser.getInstance() != null){
             currentJournalUserId = JournalUser.getInstance().getUserId();
             currentUsername = JournalUser.getInstance().getUsername();
-            welcomeUser.setText("Bienvenue  "+ currentUsername.toUpperCase());
+//            welcomeUser.setText("Bienvenue  "+ currentUsername.toUpperCase());
         }
 
         authStateListener = firebaseAuth -> {
@@ -110,6 +132,10 @@ public class MyJournal extends AppCompatActivity {
             startActivityForResult(galleryIntent, GALLERY_CODE);
         });
     }
+
+    /**
+     * This method is used to save the journal entry to the database.
+     */
 
     private void saveJournal() {
         progressBar.setVisibility(View.VISIBLE);
